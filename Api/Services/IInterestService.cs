@@ -1,6 +1,6 @@
 ﻿namespace Api.Services;
 
-public interface ILogicService
+public interface IInterestService
 {
     public double GetInternalInterestRate(double deposit);
 }

@@ -9,12 +9,12 @@ namespace Api.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly ILogger logger;
-    private readonly ILogicService logicService;
+    private readonly IInterestService _interestService;
 
-    public PaymentController(ILogicService service, ILogger<PaymentController> logger)
+    public PaymentController(IInterestService service, ILogger<PaymentController> logger)
     {
         this.logger = logger;
-        this.logicService = service;
+        this._interestService = service;
     }
     
     [HttpGet]
@@ -30,7 +30,7 @@ public class PaymentController : ControllerBase
             return Ok(new InterestRateResponseModel {Message = "please contact us in person", Rate = 0.0});
         }
 
-        var rate = logicService.GetInternalInterestRate(deposit);
+        var rate = _interestService.GetInternalInterestRate(deposit);
 
         var interest = deposit * rate;
         if (interest > 1_000_000.0)
