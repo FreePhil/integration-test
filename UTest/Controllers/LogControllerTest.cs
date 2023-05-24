@@ -27,7 +27,6 @@ public class LogControllerTest
         //
         var expectedMessage = "negative deposit is not allowed";
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>()));
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
@@ -102,7 +101,6 @@ public class LogControllerTest
         //
         var expectedMessage = "please contact us in person";
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(0.1);
         
         var controller = new PaymentController(logicServiceMock.Object, logger);
@@ -129,7 +127,6 @@ public class LogControllerTest
         //
         var expectedMessage = "the rate will change everyday";
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(0.01);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
@@ -151,6 +148,7 @@ public class LogControllerTest
     [InlineData(1_000_000, 0.01, 0.01)]
     [InlineData(5_000_000, 0.05, 0.05)]
     [InlineData(7_000_000, 0.11, 0.11)]
+    [InlineData(50.0, 20.0, 20.0)]
     public void GetInterestRate_WhenDepositIsLess100_000_000AndInterestIsLess1_000_000_ReturnOkRequestWithInterestRate(
         double deposit, double rate, double expectedRate)
     {
@@ -158,7 +156,6 @@ public class LogControllerTest
         //
         var expectedMessage = "the rate will change everyday";
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(rate);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
@@ -187,7 +184,6 @@ public class LogControllerTest
         //
         var expectedMessage = "please contact us in person";
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(rate);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
@@ -212,7 +208,6 @@ public class LogControllerTest
         // arrange
         //
         var logicServiceMock = new Mock<ILogicService>();
-        var calculator = new Mock<IInterestRateRange>();
         logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>()))
             .Throws(new Exception("unexpected error"));
         var controller = new PaymentController(logicServiceMock.Object, logger);
