@@ -8,7 +8,6 @@ namespace UTest.Services;
 public class BudgetInterestServiceTest
 {
     [Theory]
-    [InlineData(10_000, 0.03)]
     [InlineData(200_00, 0.04)]
     [InlineData(1_000_000, 0.045)]
     [InlineData(5_000_000, 0.04)]

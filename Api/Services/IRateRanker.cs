@@ -2,6 +2,6 @@
 
 public interface IRateRanker
 {
-    public string RankerName { get; set; }
+    public string RankerName { get; }
     public double GetRate(double deposit);
 }
