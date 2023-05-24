@@ -21,7 +21,7 @@ public class BudgetInterestServiceTest
         
         // act
         //
-        var result = interestService.GetInternalInterestRate(200);
+        var result = interestService.GetInternalInterestRate(deposit);
         
         // assert
         //

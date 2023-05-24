@@ -36,8 +36,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as BadRequestObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as BadRequestObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
         
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Never);
         result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
@@ -61,8 +61,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
         
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Once);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -85,8 +85,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
         
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Never);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -111,8 +111,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
 
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Once);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -136,8 +136,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
         
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Once);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -165,8 +165,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
 
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Once);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -193,8 +193,8 @@ public class LogControllerTest
 
         // assert
         //
-        var result = response as OkObjectResult;
-        var value = result.Value as InterestRateResponseModel;
+        var result = (response as OkObjectResult)!;
+        var value = (result.Value as InterestRateResponseModel)!;
 
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Once);
         result.StatusCode.Should().Be(StatusCodes.Status200OK);
