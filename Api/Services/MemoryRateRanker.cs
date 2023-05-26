@@ -15,7 +15,7 @@ public class MemoryRateRanker: IRateRanker
     
     public double GetRate(double deposit)
     {
-        foreach (var key in ranges.Keys)
+        foreach (var key in ranges.Keys.Reverse())
         {
             if (deposit >= key) return ranges[key];
         }

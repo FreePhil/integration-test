@@ -9,15 +9,15 @@ namespace Api.Controllers;
 public class PaymentController : ControllerBase
 {
     private readonly ILogger logger;
-    private readonly IInterestService _interestService;
+    private readonly IInterestService interestService;
 
     public PaymentController(IInterestService service, ILogger<PaymentController> logger)
     {
         this.logger = logger;
-        this._interestService = service;
+        this.interestService = service;
     }
     
-    [HttpGet]
+    [HttpGet("{deposit}")]
     public IActionResult GetInterestRate(double deposit)
     {
         if (deposit < 0.0)
@@ -30,7 +30,7 @@ public class PaymentController : ControllerBase
             return Ok(new InterestRateResponseModel {Message = "please contact us in person", Rate = 0.0});
         }
 
-        var rate = _interestService.GetInternalInterestRate(deposit);
+        var rate = interestService.GetInternalInterestRate(deposit);
 
         var interest = deposit * rate;
         if (interest > 1_000_000.0)
