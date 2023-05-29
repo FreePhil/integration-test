@@ -9,12 +9,12 @@ public class BudgetInterestService: IInterestService
           this.ranker = ranker;
     }
     
-    public double GetInternalInterestRate(double deposit)
+    public async Task<double> GetInternalInterestRate(double deposit)
     {
         if (deposit < 0.0d)
         {
             throw new Exception("Deposit must be greater or equal to zero");
         }
-        return ranker.GetRate(deposit) - 0.005d;
+        return (await ranker.GetRate(deposit)) - 0.005d;
     }
 }

@@ -2,5 +2,5 @@
 
 public interface IInterestService
 {
-    public double GetInternalInterestRate(double deposit);
+    public Task<double> GetInternalInterestRate(double deposit);
 }

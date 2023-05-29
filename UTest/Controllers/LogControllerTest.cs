@@ -21,7 +21,7 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIsNegative_ReturnBadRequest()
+    public async Task GetInterestRate_WhenDepositIsNegative_ReturnBadRequest()
     {
         // arrange
         //
@@ -32,7 +32,7 @@ public class LogControllerTest
 
         // act 
         //
-        var response = controller.GetInterestRate(-10);
+        var response = await controller.GetInterestRate(-10);
 
         // assert
         //
@@ -46,7 +46,7 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIsZero_ReturnOkRequest()
+    public async Task GetInterestRate_WhenDepositIsZero_ReturnOkRequest()
     {
         // arrange
         //
@@ -57,7 +57,7 @@ public class LogControllerTest
 
         // act 
         //
-        var response = controller.GetInterestRate(0);
+        var response = await controller.GetInterestRate(0);
 
         // assert
         //
@@ -70,7 +70,7 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIsTooLarge_ReturnOkRequestWithZeroValue()
+    public async Task GetInterestRate_WhenDepositIsTooLarge_ReturnOkRequestWithZeroValue()
     {
         // arrange
         //
@@ -81,7 +81,7 @@ public class LogControllerTest
 
         // act 
         //
-        var response = controller.GetInterestRate(1_000_000_000);
+        var response = await controller.GetInterestRate(1_000_000_000);
 
         // assert
         //
@@ -95,19 +95,19 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIs100_000_000AndInterestIsOver1_000_000_ReturnOkRequestWithZeroValue()
+    public async Task GetInterestRate_WhenDepositIs100_000_000AndInterestIsOver1_000_000_ReturnOkRequestWithZeroValue()
     {
         // arrange
         //
         var expectedMessage = "please contact us in person";
         var logicServiceMock = new Mock<IInterestService>();
-        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(0.1);
+        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).ReturnsAsync((double deposit) => 0.1);
         
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
         // act 
         //
-        var response = controller.GetInterestRate(100_000_000);
+        var response = await controller.GetInterestRate(100_000_000);
 
         // assert
         //
@@ -121,18 +121,18 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIs100_000_000AndInterestIs1_000_000_ReturnOkRequestWithInterest()
+    public async Task GetInterestRate_WhenDepositIs100_000_000AndInterestIs1_000_000_ReturnOkRequestWithInterest()
     {
         // arrange
         //
         var expectedMessage = "the rate will change everyday";
         var logicServiceMock = new Mock<IInterestService>();
-        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(0.01);
+        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).ReturnsAsync(0.01);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
         // act 
         //
-        var response = controller.GetInterestRate(100_000_000);
+        var response = await controller.GetInterestRate(100_000_000);
 
         // assert
         //
@@ -149,19 +149,19 @@ public class LogControllerTest
     [InlineData(5_000_000, 0.05, 0.05)]
     [InlineData(7_000_000, 0.11, 0.11)]
     [InlineData(50.0, 20.0, 20.0)]
-    public void GetInterestRate_WhenDepositIsLess100_000_000AndInterestIsLess1_000_000_ReturnOkRequestWithInterestRate(
+    public async Task GetInterestRate_WhenDepositIsLess100_000_000AndInterestIsLess1_000_000_ReturnOkRequestWithInterestRate(
         double deposit, double rate, double expectedRate)
     {
         // arrange
         //
         var expectedMessage = "the rate will change everyday";
         var logicServiceMock = new Mock<IInterestService>();
-        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(rate);
+        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).ReturnsAsync(rate);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
         // act 
         //
-        var response = controller.GetInterestRate(deposit);
+        var response = await controller.GetInterestRate(deposit);
 
         // assert
         //
@@ -177,19 +177,19 @@ public class LogControllerTest
     [Theory]
     [InlineData(10_000_000, 0.12, 0.0)]
     [InlineData(5_000_000, 0.25, 0.0)]
-    public void GetInterestRate_WhenDepositIsLess100_000_000AndInterestIsGreater1_000_000_ReturnOkRequestWithZeroRate(
+    public async Task GetInterestRate_WhenDepositIsLess100_000_000AndInterestIsGreater1_000_000_ReturnOkRequestWithZeroRate(
         double deposit, double rate, double expectedRate)
     {
         // arrange
         //
         var expectedMessage = "please contact us in person";
         var logicServiceMock = new Mock<IInterestService>();
-        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).Returns(rate);
+        logicServiceMock.Setup(m => m.GetInternalInterestRate(It.IsAny<double>())).ReturnsAsync(rate);
         var controller = new PaymentController(logicServiceMock.Object, logger);
 
         // act 
         //
-        var response = controller.GetInterestRate(deposit);
+        var response = await controller.GetInterestRate(deposit);
 
         // assert
         //
@@ -203,7 +203,7 @@ public class LogControllerTest
     }
     
     [Fact]
-    public void GetInterestRate_WhenDepositIsUnexpected_ThrowException()
+    public async Task GetInterestRate_WhenDepositIsUnexpected_ThrowException()
     {
         // arrange
         //
@@ -219,6 +219,6 @@ public class LogControllerTest
         // assert
         //
         logicServiceMock.Verify(d => d.GetInternalInterestRate(It.IsAny<double>()), Times.Never);
-        result.Should().Throw<Exception>().WithMessage("unexpected error");
+        result.Should().ThrowAsync<Exception>().WithMessage("unexpected error");
     }
 }

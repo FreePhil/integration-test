@@ -3,5 +3,5 @@
 public interface IRateRanker
 {
     public string RankerName { get; }
-    public double GetRate(double deposit);
+    public Task<double> GetRate(double deposit);
 }

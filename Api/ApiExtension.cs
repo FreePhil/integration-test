@@ -7,7 +7,7 @@ public static class ApiExtension
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddTransient<IInterestService, BudgetInterestService>();
-        services.AddTransient<IRateRanker, MemoryRateRanker>();
+        services.AddTransient<IRateRanker, DbRateRanker>();
         
         return services;
     }

@@ -11,17 +11,17 @@ public class BudgetInterestServiceTest
     [InlineData(200_00, 0.04)]
     [InlineData(1_000_000, 0.045)]
     [InlineData(5_000_000, 0.04)]
-    public void GetInternalInterestRate_WhenDepositIsGreaterOrEqualToZero_OutputFromMocks(double deposit, double expectedRate)
+    public async Task GetInternalInterestRate_WhenDepositIsGreaterOrEqualToZero_OutputFromMocks(double deposit, double expectedRate)
     {
         // arrange
         //
         var ranker = new Mock<IRateRanker>();
-        ranker.Setup(r => r.GetRate(It.IsAny<double>())).Returns(expectedRate +　0.005);
+        ranker.Setup(r => r.GetRate(It.IsAny<double>())).ReturnsAsync(expectedRate +　0.005);
         var interestService = new BudgetInterestService(ranker.Object);
         
         // act
         //
-        var result = interestService.GetInternalInterestRate(deposit);
+        var result = await interestService.GetInternalInterestRate(deposit);
         
         // assert
         //
@@ -31,7 +31,7 @@ public class BudgetInterestServiceTest
     }
     
     [Fact]
-    public void GetInternalInterestRate_WhenDepositIsLessThanZero_ThrowException()
+    public async Task GetInternalInterestRate_WhenDepositIsLessThanZero_ThrowException()
     {
         // arrange
         //
@@ -48,6 +48,6 @@ public class BudgetInterestServiceTest
         // assert
         //
         ranker.Verify(r =>　r.GetRate(It.IsAny<double>()), Times.Never);
-        result.Should().Throw<Exception>().WithMessage(expectedMessage);
+        result.Should().ThrowAsync<Exception>().WithMessage(expectedMessage);
     }
 }

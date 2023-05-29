@@ -6,7 +6,7 @@ namespace ITest.Services;
 public class BudgetInterestServiceTest
 {
     [Fact]
-    public void GetInternalInterestRate_WhenDepositIsLessThanZero_ThrowsException()
+    public async Task GetInternalInterestRate_WhenDepositIsLessThanZero_ThrowsException()
     {
         // arrange
         //
@@ -19,7 +19,7 @@ public class BudgetInterestServiceTest
         
         // assert
         //
-        result.Should().Throw<Exception>().WithMessage(expectedMessage);
+        result.Should().ThrowAsync<Exception>().WithMessage(expectedMessage);
     }
 
     // { 200_000_000, 0.045d},
@@ -38,7 +38,7 @@ public class BudgetInterestServiceTest
     [InlineData(199_999_999d, 0.035d)]
     [InlineData(200_000_000d, 0.04d)]
     [InlineData(200_000_001d, 0.04d)]
-    public void GetInternalInterestRate_WhenDepositIsLessThanZero_ReturnRate(double deposit, double expectedRate)
+    public async Task GetInternalInterestRate_WhenDepositIsLessThanZero_ReturnRate(double deposit, double expectedRate)
     {
         // arrange
         //
@@ -46,7 +46,7 @@ public class BudgetInterestServiceTest
 
         // act
         //
-        var rate = service.GetInternalInterestRate(deposit);
+        var rate = await service.GetInternalInterestRate(deposit);
 
         // assert
         //

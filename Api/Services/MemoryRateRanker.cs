@@ -13,13 +13,13 @@ public class MemoryRateRanker: IRateRanker
         { 0d, 0.03d}
     };
     
-    public double GetRate(double deposit)
+    public Task<double> GetRate(double deposit)
     {
         foreach (var key in ranges.Keys.Reverse())
         {
-            if (deposit >= key) return ranges[key];
+            if (deposit >= key) return Task.FromResult(ranges[key]);
         }
 
-        return 0d;
+        return Task.FromResult(0d);
     }
 }

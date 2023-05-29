@@ -18,7 +18,7 @@ public class PaymentController : ControllerBase
     }
     
     [HttpGet("{deposit}")]
-    public IActionResult GetInterestRate(double deposit)
+    public async Task<IActionResult> GetInterestRate(double deposit)
     {
         if (deposit < 0.0)
         {
@@ -30,7 +30,7 @@ public class PaymentController : ControllerBase
             return Ok(new InterestRateResponseModel {Message = "please contact us in person", Rate = 0.0});
         }
 
-        var rate = interestService.GetInternalInterestRate(deposit);
+        var rate = await interestService.GetInternalInterestRate(deposit);
 
         var interest = deposit * rate;
         if (interest > 1_000_000.0)

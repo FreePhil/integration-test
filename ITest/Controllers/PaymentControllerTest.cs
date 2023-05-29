@@ -69,7 +69,8 @@ public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program
         
         // assert
         //
-        var result = JsonConvert.DeserializeObject<InterestRateResponseModel>(await response.Content.ReadAsStringAsync());
+        string context = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<InterestRateResponseModel>(context);
         response.StatusCode.Should<HttpStatusCode>().Be(HttpStatusCode.OK);
         result.Rate.Should().BeApproximately(0d, 0.000_000_1d);
     }

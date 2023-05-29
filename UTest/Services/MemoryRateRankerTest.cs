@@ -15,7 +15,7 @@ public class MemoryRateRankerTest
     [InlineData(5_000_000, 0.03d)]
     [InlineData(0, 0.03d)]
     [InlineData(-1, 0d)]
-    public void GetRate_WhenDepositIsInTheRange_OutputCorrectRate(double deposit, double expectedRate)
+    public async Task GetRate_WhenDepositIsInTheRange_OutputCorrectRate(double deposit, double expectedRate)
     {
         // arrange
         //
@@ -23,7 +23,7 @@ public class MemoryRateRankerTest
 
         // act
         //
-        var result = ranker.GetRate(deposit);
+        var result = await ranker.GetRate(deposit);
         
         // assert
         //
