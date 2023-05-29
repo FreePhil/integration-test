@@ -1,18 +1,30 @@
 ﻿using System.Net;
 using Api.Models;
+using Docker.DotNet.Models;
+using DotNet.Testcontainers.Configurations;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MySql.Data.EntityFramework;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using Testcontainers.MySql;
 
 namespace ITest.Controllers;
 
-public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>
+[Collection("IntegrationTests")]
+public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<MySqlContainerFixture>
 {
     private readonly WebApplicationFactory<Program> factory;
+    private readonly MySqlContainerFixture mySqlContainer;
 
-    public PaymentControllerTest(WebApplicationFactory<Program> factory)
+    public PaymentControllerTest(WebApplicationFactory<Program> factory, MySqlContainerFixture mySqlContainer)
     {
         this.factory = factory;
+        this.mySqlContainer = mySqlContainer;
+
+        var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
+        var configuration = configurationBuilder.Build();
+        configuration["ConnectionStrings:DefaultConnection"] = mySqlContainer.ConnectionString;
     }
 
     [Theory]
