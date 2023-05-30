@@ -9,15 +9,10 @@ namespace ITest.Services;
 public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixture>
 {
     private readonly MySqlContainerServiceFixture mySqlContainer;
-    private readonly DbContextOptions<IntegrationDbContext> options;
-    
+
     public BudgetInterestServiceTest(MySqlContainerServiceFixture mySqlContainer)
     {
-        string connectionString = Environment.GetEnvironmentVariable("TestContainerConnectionString");
         this.mySqlContainer = mySqlContainer;
-        this.options = new DbContextOptionsBuilder<IntegrationDbContext>()
-            .UseMySQL(connectionString)
-            .Options;
     }
     
     [Fact]
@@ -26,7 +21,7 @@ public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixtu
         // arrange
         //
         var expectedMessage = "Deposit must be greater or equal to zero";
-        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(options)));
+        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(mySqlContainer.Options)));
 
         
         // act
@@ -58,7 +53,7 @@ public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixtu
     {
         // arrange
         //
-        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(options)));
+        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(mySqlContainer.Options)));
 
         // act
         //

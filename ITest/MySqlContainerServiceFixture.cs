@@ -1,4 +1,6 @@
-﻿using DotNet.Testcontainers.Builders;
+﻿using Api;
+using DotNet.Testcontainers.Builders;
+using Microsoft.EntityFrameworkCore;
 using Testcontainers.MySql;
 
 namespace ITest;
@@ -6,6 +8,7 @@ namespace ITest;
 public class MySqlContainerServiceFixture: IAsyncLifetime
 {
     private MySqlContainer container;
+    public DbContextOptions<IntegrationDbContext> Options;
 
     public async Task InitializeAsync()
     {
@@ -20,7 +23,9 @@ public class MySqlContainerServiceFixture: IAsyncLifetime
             .Build();
         
         await container.StartAsync();
-        Environment.SetEnvironmentVariable("TestContainerConnectionString", container.GetConnectionString());
+        this.Options = new DbContextOptionsBuilder<IntegrationDbContext>()
+            .UseMySQL(container.GetConnectionString())
+            .Options;
     }
 
     public async Task DisposeAsync()
