@@ -1,17 +1,31 @@
-﻿using Api.Services;
+﻿using Api;
+using Api.Services;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITest.Services;
 
-public class BudgetInterestServiceTest
+public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixture>
 {
+    private readonly MySqlContainerServiceFixture mySqlContainer;
+    private readonly DbContextOptions<IntegrationDbContext> options;
+    
+    public BudgetInterestServiceTest(MySqlContainerServiceFixture mySqlContainer)
+    {
+        this.mySqlContainer = mySqlContainer;
+        this.options = new DbContextOptionsBuilder<IntegrationDbContext>()
+            .UseMySQL(mySqlContainer.ConnectionString)
+            .Options;
+    }
+    
     [Fact]
     public async Task GetInternalInterestRate_WhenDepositIsLessThanZero_ThrowsException()
     {
         // arrange
         //
         var expectedMessage = "Deposit must be greater or equal to zero";
-        var service = new BudgetInterestService(new MemoryRateRanker());
+        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(options)));
+
         
         // act
         //
@@ -42,7 +56,7 @@ public class BudgetInterestServiceTest
     {
         // arrange
         //
-        var service = new BudgetInterestService(new MemoryRateRanker());
+        var service = new BudgetInterestService(new DbRateRanker(new IntegrationDbContext(options)));
 
         // act
         //

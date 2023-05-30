@@ -12,19 +12,15 @@ using Testcontainers.MySql;
 namespace ITest.Controllers;
 
 [Collection("IntegrationTests")]
-public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<MySqlContainerFixture>
+public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<MySqlContainerPaymentControllerFixture>
 {
     private readonly WebApplicationFactory<Program> factory;
-    private readonly MySqlContainerFixture mySqlContainer;
+    private readonly MySqlContainerPaymentControllerFixture mySqlContainer;
 
-    public PaymentControllerTest(WebApplicationFactory<Program> factory, MySqlContainerFixture mySqlContainer)
+    public PaymentControllerTest(WebApplicationFactory<Program> factory, MySqlContainerPaymentControllerFixture mySqlContainer)
     {
         this.factory = factory;
-        this.mySqlContainer = mySqlContainer;
-
-        var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
-        var configuration = configurationBuilder.Build();
-        configuration["ConnectionStrings:DefaultConnection"] = mySqlContainer.ConnectionString;
+        this.mySqlContainer = mySqlContainer; 
     }
 
     [Theory]

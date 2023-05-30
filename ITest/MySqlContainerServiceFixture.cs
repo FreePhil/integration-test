@@ -2,7 +2,7 @@
 
 namespace ITest;
 
-public class MySqlContainerFixture: IAsyncLifetime
+public class MySqlContainerServiceFixture: IAsyncLifetime
 {
     private MySqlContainer container;
     public string ConnectionString { get; set; }
@@ -20,6 +20,7 @@ public class MySqlContainerFixture: IAsyncLifetime
 
         await container.StartAsync();
         ConnectionString = container.GetConnectionString();
+        Environment.SetEnvironmentVariable("TestContainerConnectionString", ConnectionString);
     }
 
     public async Task DisposeAsync()
