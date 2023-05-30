@@ -1,9 +1,11 @@
 ﻿using System.Net;
+using Api;
 using Api.Models;
 using Docker.DotNet.Models;
 using DotNet.Testcontainers.Configurations;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using MySql.Data.EntityFramework;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;

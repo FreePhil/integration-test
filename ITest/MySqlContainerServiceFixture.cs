@@ -1,4 +1,5 @@
-﻿using Testcontainers.MySql;
+﻿using DotNet.Testcontainers.Builders;
+using Testcontainers.MySql;
 
 namespace ITest;
 
@@ -16,6 +17,7 @@ public class MySqlContainerServiceFixture: IAsyncLifetime
             .WithUsername("phil")
             .WithPassword("henge")
             .WithExposedPort("3306")
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
             .Build();
 
         await container.StartAsync();
