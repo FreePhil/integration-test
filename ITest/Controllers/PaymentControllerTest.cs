@@ -11,7 +11,7 @@ using Testcontainers.MySql;
 
 namespace ITest.Controllers;
 
-[Collection("IntegrationTests")]
+// [Collection("IntegrationTests")]
 public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<MySqlContainerPaymentControllerFixture>
 {
     private readonly WebApplicationFactory<Program> factory;

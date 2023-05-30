@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITest.Services;
 
+// [Collection("IntegrationTests")]
 public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixture>
 {
     private readonly MySqlContainerServiceFixture mySqlContainer;
