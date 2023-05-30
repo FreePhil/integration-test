@@ -6,7 +6,6 @@ namespace ITest;
 public class MySqlContainerServiceFixture: IAsyncLifetime
 {
     private MySqlContainer container;
-    public string ConnectionString { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -19,10 +18,9 @@ public class MySqlContainerServiceFixture: IAsyncLifetime
             .WithExposedPort("3306")
             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(3306))
             .Build();
-
+        
         await container.StartAsync();
-        ConnectionString = container.GetConnectionString();
-        Environment.SetEnvironmentVariable("TestContainerConnectionString", ConnectionString);
+        Environment.SetEnvironmentVariable("TestContainerConnectionString", container.GetConnectionString());
     }
 
     public async Task DisposeAsync()

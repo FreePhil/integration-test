@@ -7,7 +7,6 @@ namespace ITest;
 public class MySqlContainerPaymentControllerFixture: IAsyncLifetime
 {
     private MySqlContainer container;
-    public string ConnectionString { get; set; }
 
     public async Task InitializeAsync()
     {
@@ -22,8 +21,7 @@ public class MySqlContainerPaymentControllerFixture: IAsyncLifetime
             .Build();
 
         await container.StartAsync();
-        ConnectionString = container.GetConnectionString();
-        Environment.SetEnvironmentVariable("TestContainerConnectionString", ConnectionString);
+        Environment.SetEnvironmentVariable("TestContainerConnectionString", container.GetConnectionString());
     }
 
     public async Task DisposeAsync()

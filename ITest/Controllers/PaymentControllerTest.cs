@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Data.Common;
+using System.Net;
 using Api;
 using Api.Models;
 using Docker.DotNet.Models;
@@ -14,12 +15,12 @@ using Testcontainers.MySql;
 namespace ITest.Controllers;
 
 // [Collection("IntegrationTests")]
-public class PaymentControllerTest : IClassFixture<WebApplicationFactory<Program>>, IClassFixture<MySqlContainerPaymentControllerFixture>
+public class PaymentControllerTest : IClassFixture<IntegrationApplicationFactory<Program>>, IClassFixture<MySqlContainerPaymentControllerFixture>
 {
-    private readonly WebApplicationFactory<Program> factory;
+    private readonly IntegrationApplicationFactory<Program> factory;
     private readonly MySqlContainerPaymentControllerFixture mySqlContainer;
 
-    public PaymentControllerTest(WebApplicationFactory<Program> factory, MySqlContainerPaymentControllerFixture mySqlContainer)
+    public PaymentControllerTest(IntegrationApplicationFactory<Program> factory, MySqlContainerPaymentControllerFixture mySqlContainer)
     {
         this.factory = factory;
         this.mySqlContainer = mySqlContainer; 

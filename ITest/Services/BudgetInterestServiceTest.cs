@@ -13,9 +13,10 @@ public class BudgetInterestServiceTest: IClassFixture<MySqlContainerServiceFixtu
     
     public BudgetInterestServiceTest(MySqlContainerServiceFixture mySqlContainer)
     {
+        string connectionString = Environment.GetEnvironmentVariable("TestContainerConnectionString");
         this.mySqlContainer = mySqlContainer;
         this.options = new DbContextOptionsBuilder<IntegrationDbContext>()
-            .UseMySQL(mySqlContainer.ConnectionString)
+            .UseMySQL(connectionString)
             .Options;
     }
     
